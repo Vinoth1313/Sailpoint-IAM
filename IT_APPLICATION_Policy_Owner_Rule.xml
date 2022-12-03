@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Rule PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Rule created="1670078708372" id="c0a8380184d717d68184d872ba940111" language="beanshell" name="IT application policy owner rule" type="PolicyOwner">
+  <Description>This rule is used to determine the owner of a Policy violation.</Description>
+  <Signature returnType="Identity">
+    <Inputs>
+      <Argument name="log" type="org.apache.commons.logging.Log">
+        <Description>
+          The log object associated with the SailPointContext.
+        </Description>
+      </Argument>
+      <Argument name="context" type="sailpoint.api.SailPointContext">
+        <Description>
+          A sailpoint.api.SailPointContext object that can be used to query the database if necessary.
+        </Description>
+      </Argument>
+      <Argument name="identity">
+        <Description>
+          The identity with the policy violation.
+        </Description>
+      </Argument>
+      <Argument name="policy">
+        <Description>
+            The policy being evaluated.
+        </Description>
+      </Argument>
+      <Argument name="constraint">
+        <Description>
+            The constraint associated with the violation. Provided if available, set to null if there is no constraint.
+        </Description>
+      </Argument>
+    </Inputs>
+    <Returns>
+      <Argument name="identity">
+        <Description>
+        The return value for the policy violation owner may be:
+           String - identity name;
+           Identity - identity object;
+        </Description>
+      </Argument>
+    </Returns>
+  </Signature>
+  <Source>import sailpoint.object.Application;
+
+
+String applicationName = "IT Application";
+
+Application app = context.getObjectByName(Application.class,applicationName);
+
+return app.getOwner();
+</Source>
+</Rule>
