@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Form PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Form created="1670695447254" id="c0a8380184fc1ba18184fd356ad5007d" modified="1670700863481" name="Contractor Joining Form" type="CreateIdentity">
+  <Attributes>
+    <Map>
+      <entry key="isWizard" value="true"/>
+      <entry key="pageTitle" value="Contractor Joining Form"/>
+    </Map>
+  </Attributes>
+  <Section name="General Details">
+    <Field displayName="First Name" name="firstname" postBack="true" required="true" type="string"/>
+    <Field displayName="Last Name" name="lastname" postBack="true" required="true" type="string"/>
+    <Field dependencies="firstname,lastname" displayName="Username" dynamic="true" name="name" required="true" type="string">
+      <Attributes>
+        <Map>
+          <entry key="readOnly" value="true"/>
+        </Map>
+      </Attributes>
+      <Script>
+        <Source>if ((null != firstname) &amp;&amp; (null != lastname))
+{
+return (firstname + "." + lastname);
+}
+return null;</Source>
+      </Script>
+    </Field>
+    <Field displayName="Password" name="password" required="true" type="secret">
+      <ValidationRule>
+        <Reference class="sailpoint.object.Rule" id="c0a8380184fc1ba18184fd55d8d100b9" name="Contractor form password validation rule"/>
+      </ValidationRule>
+    </Field>
+    <Field displayName="Password Confirmation" name="passwordConfirm" required="true" type="secret"/>
+    <Field displayName="Email" dynamic="true" name="email" required="true" type="string">
+      <Attributes>
+        <Map>
+          <entry key="readOnly" value="true"/>
+        </Map>
+      </Attributes>
+      <Script>
+        <Source>if ((null != firstname) &amp;&amp; (null != lastname)) 
+{
+return (firstname + "." + lastname + "@vino.com");
+}
+return null;</Source>
+      </Script>
+    </Field>
+  </Section>
+  <Section name="Office Details">
+    <Field displayName="Employee Type" displayOnly="true" name="EmployeeType" type="string" value="Contractor">
+      <Attributes>
+        <Map>
+          <entry key="readOnly" value="true"/>
+        </Map>
+      </Attributes>
+    </Field>
+    <Field displayName="Department" name="department" required="true" type="string">
+      <AllowedValuesDefinition>
+        <Value>
+          <List>
+            <String>IT</String>
+            <String>Leadership</String>
+            <String>Accounts</String>
+            <String>Operations</String>
+            <String>Marketing</String>
+          </List>
+        </Value>
+      </AllowedValuesDefinition>
+    </Field>
+    <Field displayName="Region" name="region" postBack="true" required="true" type="string">
+      <AllowedValuesDefinition>
+        <Value>
+          <List>
+            <String>US</String>
+            <String>IND</String>
+          </List>
+        </Value>
+      </AllowedValuesDefinition>
+    </Field>
+    <Field displayName="city" name="city" required="true" type="string">
+      <AllowedValuesDefinition>
+        <RuleRef>
+          <Reference class="sailpoint.object.Rule" id="c0a8380184fc1ba18184fd6a920f00db" name="Contractor form city field allowed values rule"/>
+        </RuleRef>
+      </AllowedValuesDefinition>
+    </Field>
+    <Field name="IsManager" postBack="true" type="boolean"/>
+    <Field multi="true" name="Reportees" type="sailpoint.object.Identity">
+      <Attributes>
+        <Map>
+          <entry key="hidden">
+            <value>
+              <Script>
+                <Source>import sailpoint.tools.Util;
+
+boolean hidden = false;
+
+// Null out field - add condition here if desired
+
+hidden = Util.otob(form.getField("IsManager").getValue());
+
+return !hidden;</Source>
+              </Script>
+            </value>
+          </entry>
+        </Map>
+      </Attributes>
+    </Field>
+  </Section>
+</Form>
